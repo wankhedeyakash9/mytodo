@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>My todo app</h1>
+            <hr>
+            <form action="/" method="post" id="add-todo">
+          
+                <div>
+                    <input type="text" placeholder="Add a task here... " required >
+                    <button type="submit">Add Todo</button>
+                </div>
+            </form>
+
+            <div id="mytodos">
+
+                <ul>
+                    <% todos.forEach(function(todo){%>
+                            <li><%= todo.item%></li>
+                    <%}) %>     
+                </ul>
+                <% if (!todos.length) {%>
+                    <div>You have nothing to do!</div>
+                <% } %>  
+            </div>
+            <div style="float: right; padding-top: 20px;">By aakash</div>
+        </div>
+    
+
+    </body>
+
+    <script>
+
+        $("#add-todo").submit(function(e){
+            e.preventDefault()
+                        
+            $.ajax({
+                type:'post',
+                url:"/", 
+                data:{item:$("#add-todo input").val()},
+                success: function(data){location.reload()}
+            })
+        })
+        $("li").click(function(){
+            $.ajax({
+                type:'delete',
+                url:"/"+ $(this).text().replace(/ /g,"-"), 
+                success: function(data){location.reload()}
+            })
+        })
+
+
+    </script>
+
+</html>
